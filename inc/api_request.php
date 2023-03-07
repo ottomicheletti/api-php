@@ -1,5 +1,4 @@
 <?php
-
 class Request
 {
   private $endpoint;
@@ -29,31 +28,70 @@ class Request
     ];
   }
 
-  public function GET_products()
+  public function GET_produtos()
   {
+    $db = new Database();
+    $results = $db->EXE_QUERY("SELECT * FROM " . $this->endpoint);
     return [
-      'data' => ['nome' => 'coca-cola', 'preco' => 3]
+      'status' => 'SUCCESS',
+      'message' => '',
+      'results' => $results,
     ];
   }
 
-  public function POST_products()
+  public function GET_pedidos()
   {
+    $db = new Database();
+    $results = $db->EXE_QUERY("SELECT * FROM " . $this->endpoint);
     return [
-      'data' => ['message' => 'Produto adicionado no id XYZ', 'req_body' => $this->req_body]
+      'status' => 'SUCCESS',
+      'message' => '',
+      'results' => $results,
     ];
   }
 
-  public function PUT_products()
+  public function GET_tipo_produto()
   {
+    $db = new Database();
+    $results = $db->EXE_QUERY("SELECT * FROM " . $this->endpoint);
     return [
-      'data' => ['message' => 'Produto com id ' . $this->req_param . ' atualizado', 'req_body' => $this->req_body]
+      'status' => 'SUCCESS',
+      'message' => '',
+      'results' => $results,
     ];
   }
 
-  public function DELETE_products()
+  public function GET_produto_pedido()
   {
+    $db = new Database();
+    $results = $db->EXE_QUERY("SELECT * FROM " . $this->endpoint);
     return [
-      'data' => 'Produto com id ' . $this->req_param . ' deletado'
+      'status' => 'SUCCESS',
+      'message' => '',
+      'results' => $results,
     ];
   }
+
+
+
+  /* public function POST_produtos()
+  {
+    return [
+      ['message' => 'Produto adicionado no id XYZ', 'req_body' => $this->req_body]
+    ];
+  }
+
+  public function PUT_produtos()
+  {
+    return [
+      ['message' => 'Produto com id ' . $this->req_param . ' atualizado', 'req_body' => $this->req_body]
+    ];
+  }
+
+  public function DELETE_produtos()
+  {
+    return [
+      ['message' => 'Produto com id ' . $this->req_param . ' deletado']
+    ];
+  } */
 }
