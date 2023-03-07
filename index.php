@@ -43,7 +43,7 @@ switch ($req_method) {
       $api_req = new Request($api->get_endpoint(), $path[1], $req_body);
     } else {
       //echo "entrou no else";
-      $api->api_request_error('"PUT" and "DELETE" HTTP methods require a parameter after the endpoint.');
+      $api->api_request_error("'PUT' and 'DELETE' HTTP methods require a parameter after the endpoint.");
     }
     break;
   case 'DELETE':
@@ -53,7 +53,7 @@ switch ($req_method) {
       $api_req = new Request($api->get_endpoint(), $path[1]);
     } else {
       //echo "entrou no else";
-      $api->api_request_error('"PUT" and "DELETE" HTTP methods require a parameter after the endpoint.');
+      $api->api_request_error("'PUT' and 'DELETE' HTTP methods require a parameter after the endpoint.");
     }
     break;
 }
