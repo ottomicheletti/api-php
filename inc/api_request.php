@@ -28,6 +28,9 @@ class Request
     ];
   }
 
+  //--------------------
+  // Métodos HTTP/GET
+  //--------------------
   public function GET_produtos()
   {
     $db = new Database();
@@ -72,15 +75,24 @@ class Request
     ];
   }
 
-
-
-  /* public function POST_produtos()
+  //--------------------
+  // Métodos HTTP/POST
+  //--------------------
+  public function POST_produtos()
   {
+    $db = new Database();
+    //! PAREI AQUI
+    $results = $db->EXE_NON_QUERY("INSERT INTO desafio." . $this->endpoint . " (nome, valor, tipo) VALUES (" . $this->req_body['nome'] . ", " . $this->req_body['valor'] . ", " . $this->req_body['tipo'] . ")");
     return [
-      ['message' => 'Produto adicionado no id XYZ', 'req_body' => $this->req_body]
+      'status' => 'SUCCESS',
+      'message' => '',
+      'results' => $results,
     ];
   }
 
+  //--------------------
+  // Métodos HTTP/PUT
+  //--------------------
   public function PUT_produtos()
   {
     return [
@@ -88,10 +100,13 @@ class Request
     ];
   }
 
+  //--------------------
+  // Métodos HTTP/DELETE
+  //--------------------
   public function DELETE_produtos()
   {
     return [
       ['message' => 'Produto com id ' . $this->req_param . ' deletado']
     ];
-  } */
+  }
 }
