@@ -129,10 +129,51 @@ class Request
   //--------------------
   // Métodos HTTP/PUT
   //--------------------
+  public function PUT_pedidos()
+  {
+    $query = "UPDATE pedidos SET total=? WHERE codigo=?";
+    $db = new Database();
+    $results = $db->EXE_NON_QUERY($query, [$this->req_body->total, intval($this->req_param)]);
+    return [
+      'status' => 'SUCCESS',
+      'message' => '',
+      'results' => $results,
+    ];
+  }
+
   public function PUT_produtos()
   {
+    $query = "UPDATE produtos SET nome=?, valor=?, tipo=? WHERE codigo=?";
+    $db = new Database();
+    $results = $db->EXE_NON_QUERY($query, [$this->req_body->nome, $this->req_body->valor, $this->req_body->tipo, intval($this->req_param)]);
     return [
-      ['message' => 'Produto com id ' . $this->req_param . ' atualizado', 'req_body' => $this->req_body]
+      'status' => 'SUCCESS',
+      'message' => '',
+      'results' => $results,
+    ];
+  }
+
+  public function PUT_produtos_pedido()
+  {
+    $query = "UPDATE produtos_pedido SET pedido=?, produto=?, quantidade=?, total=? WHERE codigo=?";
+    $db = new Database();
+    $results = $db->EXE_NON_QUERY($query, [$this->req_body->pedido, $this->req_body->produto, $this->req_body->quantidade, $this->req_body->total, intval($this->req_param)]);
+    return [
+      'status' => 'SUCCESS',
+      'message' => '',
+      'results' => $results,
+    ];
+  }
+
+  public function PUT_tipos_produto()
+  {
+    $query = "UPDATE tipos_produto SET nome=?, percentual_imposto=? WHERE codigo=?";
+    $db = new Database();
+    $results = $db->EXE_NON_QUERY($query, [$this->req_body->nome, $this->req_body->percentual_imposto, intval($this->req_param)]);
+    return [
+      'status' => 'SUCCESS',
+      'message' => '',
+      'results' => $results,
     ];
   }
 
