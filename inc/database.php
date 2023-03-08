@@ -24,13 +24,13 @@ class Database
     // execução da query do tipo SELECT
     try {
       if ($parameters != null) {
-        $gestor = $connection->prepare($query);
-        $gestor->execute($parameters);
-        $results = $gestor->fetchAll(PDO::FETCH_ASSOC);
+        $stmt = $connection->prepare($query);
+        $stmt->execute($parameters);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
       } else {
-        $gestor = $connection->prepare($query);
-        $gestor->execute();
-        $results = $gestor->fetchAll(PDO::FETCH_ASSOC);
+        $stmt = $connection->prepare($query);
+        $stmt->execute();
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
       }
     } catch (PDOException $e) {
       return false;
@@ -66,19 +66,21 @@ class Database
     $connection->beginTransaction();
     try {
       if ($parameters != null) {
-        $gestor = $connection->prepare($query);
-        $gestor->execute($parameters);
+        $stmt = $connection->prepare($query);
+        $stmt->execute($parameters);
       } else {
-        $gestor = $connection->prepare($query);
-        $gestor->execute();
+        $stmt = $connection->prepare($query);
+        $stmt->execute();
       }
+      $lastId = $connection->lastInsertId(); // retorna o código do item que sofreu INSERT, UPDATE ou DELETE.
       $connection->commit();
+      return $lastId;
     } catch (PDOException $e) {
       $connection->rollBack();
       return false;
     }
 
-    //close connection
+    // encerra a conexão com o DB
     if ($close_connection) {
       $connection = null;
     }
