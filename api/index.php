@@ -3,7 +3,7 @@
 // https://youtu.be/gsPp71nRMQk
 
 date_default_timezone_set("America/Sao_Paulo");
-$path = array_slice(explode('/', $_SERVER['REQUEST_URI']), 2); // conteudo da barra após api-php/[0]/[1] onde [0] é o endpoint e o [1] argumento
+$path = array_slice(explode('/', $_SERVER['REQUEST_URI']), 3); // conteudo da barra após api-php/[0]/[1] onde [0] é o endpoint e o [1] argumento
 $req_method = $_SERVER['REQUEST_METHOD']; // qual método HTTP a página foi chamada
 $req_body = json_decode(file_get_contents('php://input')); // objeto do body da requisição HTTP, acessar as chaves do body com: $req_body->exemplo
 
