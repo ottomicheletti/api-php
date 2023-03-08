@@ -31,17 +31,6 @@ class Request
   //--------------------
   // Métodos HTTP/GET
   //--------------------
-  public function GET_produtos()
-  {
-    $db = new Database();
-    $results = $db->EXE_QUERY("SELECT * FROM " . $this->endpoint);
-    return [
-      'status' => 'SUCCESS',
-      'message' => '',
-      'results' => $results,
-    ];
-  }
-
   public function GET_pedidos()
   {
     $db = new Database();
@@ -53,7 +42,7 @@ class Request
     ];
   }
 
-  public function GET_tipo_produto()
+  public function GET_produtos()
   {
     $db = new Database();
     $results = $db->EXE_QUERY("SELECT * FROM " . $this->endpoint);
@@ -64,7 +53,18 @@ class Request
     ];
   }
 
-  public function GET_produto_pedido()
+  public function GET_produtos_pedido()
+  {
+    $db = new Database();
+    $results = $db->EXE_QUERY("SELECT * FROM " . $this->endpoint);
+    return [
+      'status' => 'SUCCESS',
+      'message' => '',
+      'results' => $results,
+    ];
+  }
+
+  public function GET_tipos_produto()
   {
     $db = new Database();
     $results = $db->EXE_QUERY("SELECT * FROM " . $this->endpoint);
@@ -78,11 +78,47 @@ class Request
   //--------------------
   // Métodos HTTP/POST
   //--------------------
+  public function POST_pedidos()
+  {
+    $query = "INSERT INTO pedidos (total) VALUES(?)";
+    $db = new Database();
+    $results = $db->EXE_NON_QUERY($query, [$this->req_body->total]);
+    return [
+      'status' => 'SUCCESS',
+      'message' => '',
+      'results' => $results,
+    ];
+  }
+
   public function POST_produtos()
   {
+    $query = "INSERT INTO produtos (nome, valor, tipo) VALUES(?, ?, ?)";
     $db = new Database();
-    //! PAREI AQUI
-    $results = $db->EXE_NON_QUERY("INSERT INTO desafio." . $this->endpoint . " (nome, valor, tipo) VALUES (" . $this->req_body['nome'] . ", " . $this->req_body['valor'] . ", " . $this->req_body['tipo'] . ")");
+    $results = $db->EXE_NON_QUERY($query, [$this->req_body->nome, $this->req_body->valor, $this->req_body->tipo]);
+    return [
+      'status' => 'SUCCESS',
+      'message' => '',
+      'results' => $results,
+    ];
+  }
+
+  public function POST_produtos_pedido()
+  {
+    $query = "INSERT INTO produtos_pedido (pedido, produto, quantidade, total) VALUES(?, ?, ?, ?)";
+    $db = new Database();
+    $results = $db->EXE_NON_QUERY($query, [$this->req_body->pedido, $this->req_body->produto, $this->req_body->quantidade, $this->req_body->total]);
+    return [
+      'status' => 'SUCCESS',
+      'message' => '',
+      'results' => $results,
+    ];
+  }
+
+  public function POST_tipos_produto()
+  {
+    $query = "INSERT INTO tipos_produto (nome, percentual_imposto) VALUES(?, ?)";
+    $db = new Database();
+    $results = $db->EXE_NON_QUERY($query, [$this->req_body->nome, $this->req_body->percentual_imposto]);
     return [
       'status' => 'SUCCESS',
       'message' => '',
