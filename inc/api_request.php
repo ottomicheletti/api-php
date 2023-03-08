@@ -180,10 +180,51 @@ class Request
   //--------------------
   // Métodos HTTP/DELETE
   //--------------------
+  public function DELETE_pedidos()
+  {
+    $query = "DELETE FROM pedidos WHERE codigo=?";
+    $db = new Database();
+    $results = $db->EXE_NON_QUERY($query, [intval($this->req_param)]);
+    return [
+      'status' => 'SUCCESS',
+      'message' => '',
+      'results' => $results,
+    ];
+  }
+
   public function DELETE_produtos()
   {
+    $query = "DELETE FROM produtos WHERE codigo=?";
+    $db = new Database();
+    $results = $db->EXE_NON_QUERY($query, [intval($this->req_param)]);
     return [
-      ['message' => 'Produto com id ' . $this->req_param . ' deletado']
+      'status' => 'SUCCESS',
+      'message' => '',
+      'results' => $results,
+    ];
+  }
+
+  public function DELETE_produtos_pedido()
+  {
+    $query = "DELETE FROM produtos_pedido WHERE pedido=?";
+    $db = new Database();
+    $results = $db->EXE_NON_QUERY($query, [intval($this->req_param)]);
+    return [
+      'status' => 'SUCCESS',
+      'message' => '',
+      'results' => $results,
+    ];
+  }
+
+  public function DELETE_tipos_produto()
+  {
+    $query = "DELETE FROM tipos_produto WHERE codigo=?";
+    $db = new Database();
+    $results = $db->EXE_NON_QUERY($query, [intval($this->req_param)]);
+    return [
+      'status' => 'SUCCESS',
+      'message' => '',
+      'results' => $results,
     ];
   }
 }
