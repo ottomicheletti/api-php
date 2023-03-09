@@ -8,12 +8,10 @@ class Database
 
     // conexão com o DB
     $connection = new PDO(
-      'mysql:host=' . DB_HOST .
-        ';dbname=' . DB_NAME .
-        ';charset=' . DB_CHARSET,
+      'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=utf8mb4',
       DB_USER,
       DB_PASS,
-      array(PDO::ATTR_PERSISTENT => true)
+      array(\PDO::ATTR_PERSISTENT => true)
     );
 
     if ($debug) {
@@ -49,12 +47,10 @@ class Database
   {
     // conexão com o DB
     $connection = new PDO(
-      'mysql:host=' . DB_HOST .
-        ';dbname=' . DB_NAME .
-        ';charset=' . DB_CHARSET,
+      'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=utf8mb4',
       DB_USER,
       DB_PASS,
-      array(PDO::ATTR_PERSISTENT => true)
+      array(\PDO::ATTR_PERSISTENT => true)
     );
 
     if ($debug) {
