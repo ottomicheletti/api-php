@@ -1,0 +1,47 @@
+#venda {
+  height: calc(100vh - 3.5em);
+  width: 100vw;
+  display: flex;
+}
+
+.stack {
+  width: 50vw;
+  padding: 2em;
+}
+
+.input-default {
+  border: 1px #c4c4c4 solid;
+  border-radius: 5px;
+  display: flex;
+  width: 18em;
+  height: 3em;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.input-default div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 7em;
+  height: 100%;
+  border-right: 1px #c4c4c4 solid;
+  background-color: #f1f2f3;
+  border-bottom-left-radius: 5px;
+  border-top-left-radius: 5px;
+}
+
+.input-default select {
+  border: none;
+  outline: none;
+}
+
+.input-default input {
+  border: none;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  outline: none;
+  width: calc(100% - 7em);
+  height: 100%;
+  text-align: center;
+}
