@@ -20,6 +20,12 @@
   gap: 1em;
 }
 
+@media only screen and (max-width: 1100px) {
+  .display-column {
+    flex-direction: column;
+  }
+}
+
 .input-default {
   border: 1px #c4c4c4 solid;
   border-radius: 5px;
@@ -55,7 +61,7 @@
   width: calc(100% - 7em);
 }
 
-.input-default > input {
+.input-default input {
   border: none;
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
@@ -80,4 +86,8 @@
 
 .button-default:active {
   transform: scale(0.99);
+}
+
+hr {
+  border-left: 1px #c4c4c4 solid;
 }

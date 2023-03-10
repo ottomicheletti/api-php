@@ -93,8 +93,8 @@ function Venda() {
             Incluir
           </button>
         </div>
-        <div id='divider'></div>
-        <div className='stack'></div>
+        <hr id='divider' />
+        <div className='display-block'></div>
       </div>
     </Layout>
   );
