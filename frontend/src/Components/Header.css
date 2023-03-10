@@ -2,13 +2,13 @@
   width: 100%;
   height: 3.5em;
   padding: 0.25em;
-  background-color: #e3f6f5;
+  background-color: #d9e8fb;
   display: flex;
   align-items: center;
 }
 
 #navbar-title {
-  width: 12em;
+  width: 15em;
   height: 3em;
   padding: 0.25em;
   text-align: center;
@@ -26,20 +26,18 @@
 }
 
 .navbar-item {
-  border: 2px #272343 solid;
   border-radius: 5px;
   width: 9em;
   margin: auto 0.25em;
   text-align: center;
   text-decoration: none;
-  color: #272343;
-  font-weight: 600;
+  color: #414854;
 }
 
 .navbar-item:hover {
-  background-color: #bae8e8;
+  color: #616d7d;
 }
 
 .active {
-  background-color: #ffd803;
+  font-weight: 700;
 }
