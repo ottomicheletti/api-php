@@ -1,0 +1,33 @@
+.message-default {
+  bottom: 1em;
+  right: 1em;
+  position: fixed;
+  height: 3em;
+  width: 18em;
+  border: 1px black solid;
+  border-radius: 5px;
+  display: flex;
+  padding: 0.25em;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.success {
+  color: #155724;
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+}
+
+.check {
+  color: #155724;
+}
+
+.error {
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+}
+
+.x {
+  color: #721c24;
+}
