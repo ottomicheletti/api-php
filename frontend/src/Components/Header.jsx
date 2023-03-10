@@ -12,8 +12,8 @@ function Header() {
       </div>
       <div id='navbar-menu'>
         <Link
-          className={`${pathname === '/vendas' ? 'navbar-item active' : 'navbar-item'}`}
-          to='/vendas'
+          className={`${pathname === '/venda' ? 'navbar-item active' : 'navbar-item'}`}
+          to='/venda'
         >
           Vendas
         </Link>
@@ -24,10 +24,10 @@ function Header() {
           Produtos
         </Link>
         <Link
-          className={`${pathname === '/pedidos' ? 'navbar-item active' : 'navbar-item'}`}
-          to='/pedidos'
+          className={`${pathname === '/tipos' ? 'navbar-item active' : 'navbar-item'}`}
+          to='/tipos'
         >
-          Pedidos
+          Tipos de Produtos
         </Link>
         <Link
           className={`${
