@@ -45,7 +45,13 @@ class Request
   public function GET_produtos()
   {
     $db = new Database();
-    $results = $db->EXE_QUERY("SELECT * FROM " . $this->endpoint);
+    $results = $db->EXE_QUERY("SELECT
+    produtos.*,
+    tipos_produto.*,
+    produtos.nome AS nome,
+    produtos.codigo AS codigo,
+    tipos_produto.nome AS categoria
+    FROM produtos INNER JOIN tipos_produto ON produtos.tipo = tipos_produto.codigo");
     return [
       'status' => 'SUCCESS',
       'message' => '',
