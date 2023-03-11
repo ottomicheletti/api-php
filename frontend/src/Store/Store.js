@@ -1,11 +1,13 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
+import request from '../Helpers/request';
+import produce from 'immer';
 
 export const useStore = create(devtools(
-  (set) => ({
-    produtos: [],
-    carrinho: [],
-    venda: {
+  (set, get) => ({
+    products: [],
+    cart: [],
+    sale: {
       produto: 1,
       quantidade: 0,
       total: 0,
@@ -15,20 +17,40 @@ export const useStore = create(devtools(
       type: '',
     },
 
-    setProdutos: (data) => set(() => ({
-      produtos: data,
-    }), false, 'setProdutos'),
+    fetchProducts: async () => {
+      const response = await request('produtos', 'GET');
+      set({ products: await response }, false, 'fetchProducts');
+    },
 
-    setTotal: () => set((state) => ({
-      venda: {
-        ...state.venda,
-        total: state.produtos[state.venda.produto - 1]?.valor * state.venda.quantidade,
+    insertOnCart: () => set((state) => ({
+      cart: [...state.cart, state.sale]
+    }), false, 'insertOnCart'),
+
+    removeFromCart: (id) => set((state) => ({
+      cart: state.cart.filter((item) => item.produto !== id),
+    }), false, 'removeFromCart'),
+
+    updateCartItem: (id, qtd, total) => {
+      const cartItemIndex = get().cart.findIndex((p) => p.produto === id);
+
+      return set(produce((state) => {
+        state.cart[cartItemIndex] = {
+          ...state.cart[cartItemIndex],
+          quantidade: state.cart[cartItemIndex].quantidade += qtd,
+          total: state.cart[cartItemIndex].total += total };
+      }), false, 'updateCart');
+    },
+
+    emptyCart: () => {
+      set({ cart: [] }, false, 'emptyCart');
+    },
+
+    updateTotal: () => set((state) => ({
+      sale: {
+        ...state.sale,
+        total: state.products[state.sale.produto - 1]?.valor * state.sale.quantidade,
       }
-    }), false, 'setTotal'),
-
-    setCarrinho: () => set((state) => ({
-      carrinho: [...state.carrinho, state.venda]
-    }), false, 'setCarrinho'),
+    }), false, 'updateTotal'),
 
     setMessage: ({text, type}) => set(() => ({
       message: {
@@ -37,29 +59,28 @@ export const useStore = create(devtools(
       }
     }), false, 'setMessage'),
 
-    clearMessage: () => set((state) => ({
-      ...state,
+    clearMessage: () => set(() => ({
       message: {
         text: '',
         type: '',
       }
     }), false, 'clearMessage'),
 
-    clearVenda: () => set((state) => ({
-      ...state,
-      venda: {
+    setSale: ({ target: { name, value } }) => set((state) => ({
+      sale: {
+        ...state.sale,
+        [name]: parseInt(value)
+      }
+    }), false, `setSale-${name}`),
+
+    clearSale: () => set(() => ({
+      sale: {
         produto: 1,
         quantidade: 0,
         total: 0,
       }
-    }), false, 'clearVenda'),
+    }), false, 'clearSale'),
 
-    handleChange: ({ target: { name, value } }) => set((state) => ({
-      ...state,
-      venda: {
-        ...state.venda,
-        [name]: parseInt(value)
-      }
-    }), false, `handleChange-${name}`),
+
 }),
 ));
