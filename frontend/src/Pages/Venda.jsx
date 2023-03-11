@@ -1,31 +1,39 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react';
-import Layout from '../Components/Layout';
-import request from '../Helpers/request';
-import { useStore } from '../Store/Store';
 import { v4 as uuidv4 } from 'uuid';
+import Layout from '../Components/Layout';
+import Table from './../Components/Table';
+
+import { useStore } from '../Store/Store';
 import './Venda.css';
 
 function Venda() {
   const {
-    produtos,
-    // carrinho,
-    venda,
-    setProdutos,
-    setTotal,
-    setCarrinho,
+    products,
+    cart,
+    sale,
+    fetchProducts,
+    insertOnCart,
+    updateCartItem,
+    updateTotal,
     setMessage,
-    clearVenda,
-    handleChange,
+    setSale,
+    clearSale,
   } = useStore((state) => state);
 
   const handleClick = (name) => {
-    if (venda.total === null || venda.total > 0) {
+    if (sale.total === null || sale.total > 0) {
       switch (name) {
         case 'incluir':
-          setCarrinho();
-          setMessage({ text: 'Produto incluído com sucesso!', type: 'success' });
-          clearVenda();
+          const idx = [...cart].findIndex((c) => c.produto === sale.produto);
+          if (idx === -1) {
+            insertOnCart();
+            setMessage({ text: 'Produto incluído com sucesso!', type: 'success' });
+          } else {
+            updateCartItem(sale.produto, sale.quantidade, sale.total);
+            setMessage({ text: 'O produto foi atualizado!', type: 'success' });
+          }
+          clearSale();
           break;
         case 'concluir':
           // implementar esse case
@@ -39,12 +47,12 @@ function Venda() {
   };
 
   useEffect(() => {
-    request('produtos', 'GET').then((response) => setProdutos(response));
+    fetchProducts();
   }, []);
 
   useEffect(() => {
-    setTotal();
-  }, [venda.produto, venda.quantidade]);
+    updateTotal();
+  }, [sale.produto, sale.quantidade]);
 
   return (
     <Layout>
@@ -52,15 +60,10 @@ function Venda() {
         <div className='display-block'>
           <div className='input-default'>
             <div>Produto</div>
-            <select
-              name='produto'
-              id='produto'
-              onChange={handleChange}
-              value={venda.produto}
-            >
-              {produtos.map((produto) => (
-                <option value={produto.codigo} key={uuidv4()}>
-                  {`${('00' + produto.codigo).slice(-2)} - ${produto.nome}`}
+            <select name='produto' onChange={setSale} value={sale.produto}>
+              {products.map((product) => (
+                <option value={product.codigo} key={uuidv4()}>
+                  {`${('00' + product.codigo).slice(-2)} - ${product.nome}`}
                 </option>
               ))}
             </select>
@@ -72,17 +75,31 @@ function Venda() {
                 type='number'
                 name='quantidade'
                 min='0'
-                value={venda.quantidade}
-                onChange={handleChange}
+                value={sale.quantidade}
+                onChange={setSale}
               />
             </div>
             <div className='input-default'>
               <div>Valor (un)</div>
-              <div>{`R$${venda.produto ? produtos[venda.produto - 1]?.valor : 0}`}</div>
+              <div>
+                {sale.produto
+                  ? products[sale.produto - 1]?.valor.toLocaleString('pt-BR', {
+                      style: 'currency',
+                      currency: 'BRL',
+                    })
+                  : 0}
+              </div>
             </div>
             <div className='input-default'>
               <div>Total</div>
-              <div>{`R$${venda?.total ? venda.total : 0}`}</div>
+              <div>
+                {sale?.total
+                  ? sale.total.toLocaleString('pt-BR', {
+                      style: 'currency',
+                      currency: 'BRL',
+                    })
+                  : 0}
+              </div>
             </div>
           </div>
           <button
@@ -94,7 +111,10 @@ function Venda() {
           </button>
         </div>
         <hr id='divider' />
-        <div className='display-block'></div>
+        <div className='display-block'>
+          <Table />
+          {/* Implementar botão Concluir Venda */}
+        </div>
       </div>
     </Layout>
   );
