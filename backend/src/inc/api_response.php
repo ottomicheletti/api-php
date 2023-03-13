@@ -57,7 +57,9 @@ class Response
 
   public function send_response()
   {
-    header("Access-Control-Allow-Origin: *");
+    header('Access-Control-Allow-Origin: *');
+    header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+    header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, X-Requested-With");
     header('Content-Type: application/json; charset=utf-8');
     echo json_encode($this->data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK | JSON_PRETTY_PRINT);
     die();
