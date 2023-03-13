@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useStore } from '../Store/Store';
 import { Trash } from '@phosphor-icons/react';
 import './Table.css';
 
 function Table() {
-  const { cart, products, removeFromCart } = useStore((state) => state);
+  const { cart, products, removeFromCart, calculateTaxes, taxes } = useStore(
+    (state) => state
+  );
+
+  useEffect(() => {
+    calculateTaxes();
+  }, [calculateTaxes, cart]);
 
   return (
     <table>
@@ -58,14 +64,10 @@ function Table() {
         <tr>
           <th colSpan={3}>Imposto Estimado</th>
           <th>
-            {cart
-              .reduce(
-                (acc, curr) =>
-                  acc +
-                  curr.total * (products[curr.produto - 1].percentual_imposto / 100),
-                0
-              )
-              .toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+            {taxes.toLocaleString('pt-BR', {
+              style: 'currency',
+              currency: 'BRL',
+            })}
           </th>
         </tr>
       </tfoot>
