@@ -28,8 +28,8 @@ function Message() {
     <>
       {visivel && (
         <div className={`message-default ${message.type}`}>
-          {message.type === 'success' && <CheckSquare size={32} className='check' />}
-          {message.type === 'error' && <XSquare size={32} className='x' />}
+          {message.type === 'ok' && <CheckSquare size={32} className='check-badge' />}
+          {message.type === 'fail' && <XSquare size={32} className='x-badge' />}
           <p>{message.text}</p>
         </div>
       )}

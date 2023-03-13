@@ -12,22 +12,30 @@
   align-items: center;
 }
 
-.success {
+.ok {
   color: #155724;
   background-color: #d4edda;
   border: 1px solid #c3e6cb;
 }
 
-.check {
+.ok p {
   color: #155724;
 }
 
-.error {
+.check-badge {
+  color: #155724;
+}
+
+.fail {
   color: #721c24;
   background-color: #f8d7da;
   border-color: #f5c6cb;
 }
 
-.x {
+.fail p {
+  color: #721c24;
+}
+
+.x-badge {
   color: #721c24;
 }
