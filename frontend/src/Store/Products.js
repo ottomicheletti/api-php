@@ -12,18 +12,18 @@ export const productsStore = create(devtools(
     fetchProducts: async () => {
       const response = await request('produtos', 'GET');
       const onEdit = response.map((obj) => obj = false);
-      set({ edit: onEdit });
+      set({ edit: onEdit }, false, 'setInitialEdit');
       set({ products: await response }, false, 'fetchProducts');
     },
 
     setOnEdit: (idx, bool) => {
       const newOnEdit = get().edit.map((b, index) => index === idx ? b = bool : b = !bool  );
-      set({ edit: newOnEdit });
+      set({ edit: newOnEdit }, false, 'setOnEdit');
     },
 
     confirmOnEdit: (idx, bool) => set((state) => {
       state.edit[idx] = bool;
-    }, false, 'updateCart'),
+    }, false, 'confirmOnEdit'),
 
 
 }), {name: 'Loja do Mirante - productsStore'}));
