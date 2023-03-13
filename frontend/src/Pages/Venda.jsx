@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import request from '../Helpers/request';
 import Layout from '../Components/Layout';
 import Table from './../Components/Table';
 
@@ -12,19 +13,21 @@ function Venda() {
     products,
     cart,
     sale,
+    taxes,
     fetchProducts,
     insertOnCart,
     updateCartItem,
+    emptyCart,
     updateTotal,
     setMessage,
     setSale,
     clearSale,
   } = useStore((state) => state);
 
-  const handleClick = (name) => {
-    if (sale.total === null || sale.total > 0) {
-      switch (name) {
-        case 'incluir':
+  const handleClick = async (name) => {
+    switch (name) {
+      case 'incluir':
+        if (sale.total === null || sale.total > 0) {
           const idx = [...cart].findIndex((c) => c.produto === sale.produto);
           if (idx === -1) {
             insertOnCart();
@@ -34,15 +37,28 @@ function Venda() {
             setMessage({ text: 'O produto foi atualizado!', type: 'success' });
           }
           clearSale();
-          break;
-        case 'concluir':
-          // implementar esse case
-          break;
-        default:
-          break;
-      }
-    } else {
-      setMessage({ text: 'Verifique seus inputs.', type: 'error' });
+        } else {
+          setMessage({ text: 'Verifique seus inputs.', type: 'error' });
+        }
+        break;
+      case 'concluir':
+        if (cart.length > 0) {
+          const total = parseFloat(
+            cart.reduce((acc, curr) => acc + curr.total, 0).toFixed(2)
+          );
+          const pedido = await request('pedidos', 'POST', { total, imposto: taxes });
+          cart.forEach(async (item) => {
+            await request('produtos_pedido', 'POST', { pedido, ...item });
+          });
+          emptyCart();
+          setMessage({ text: 'Venda concluída!', type: 'success' });
+        } else {
+          setMessage({ text: 'Não há produtos em venda.', type: 'error' });
+        }
+        break;
+      default:
+        setMessage({ text: 'Verifique seus inputs.', type: 'error' });
+        break;
     }
   };
 
@@ -113,7 +129,13 @@ function Venda() {
         <hr id='divider' />
         <div className='display-block'>
           <Table />
-          {/* Implementar botão Concluir Venda */}
+          <button
+            className='button-default'
+            name='concluir'
+            onClick={({ target: { name } }) => handleClick(name)}
+          >
+            Concluir Venda
+          </button>
         </div>
       </div>
     </Layout>
