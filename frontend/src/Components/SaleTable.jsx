@@ -3,9 +3,9 @@ import { v4 as uuidv4 } from 'uuid';
 import { saleStore } from '../Store/Sale';
 import { messageStore } from '../Store/Message';
 import { Trash } from '@phosphor-icons/react';
-import './Table.css';
+import './Tables.css';
 
-function Table() {
+function SaleTable() {
   const { cart, products, removeFromCart, calculateTaxes, taxes } = saleStore(
     (state) => state
   );
@@ -79,4 +79,4 @@ function Table() {
   );
 }
 
-export default Table;
+export default SaleTable;
