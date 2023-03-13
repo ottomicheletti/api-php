@@ -3,7 +3,7 @@ import { devtools } from 'zustand/middleware';
 import request from '../Helpers/request';
 import produce from 'immer';
 
-export const useStore = create(devtools(
+export const saleStore = create(devtools(
   (set, get) => ({
     products: [],
     cart: [],
@@ -12,10 +12,6 @@ export const useStore = create(devtools(
       quantidade: 0,
       total: 0,
     },
-    message: {
-      text: '',
-      type: '',
-    },
     taxes: 0,
 
     fetchProducts: async () => {
@@ -23,12 +19,12 @@ export const useStore = create(devtools(
       set({ products: await response }, false, 'fetchProducts');
     },
 
-    insertOnCart: () => set((state) => ({
-      cart: [...state.cart, state.sale]
+    insertOnCart: () => set(() => ({
+      cart: [...get().cart, get().sale]
     }), false, 'insertOnCart'),
 
-    removeFromCart: (id) => set((state) => ({
-      cart: state.cart.filter((item) => item.produto !== id),
+    removeFromCart: (id) => set(() => ({
+      cart: get().cart.filter((item) => item.produto !== id),
     }), false, 'removeFromCart'),
 
     updateCartItem: (id, qtd, total) => {
@@ -36,7 +32,7 @@ export const useStore = create(devtools(
 
       return set(produce((state) => {
         state.cart[cartItemIndex] = {
-          ...state.cart[cartItemIndex],
+          ...get().cart[cartItemIndex],
           quantidade: state.cart[cartItemIndex].quantidade += qtd,
           total: state.cart[cartItemIndex].total += total };
       }), false, 'updateCart');
@@ -46,10 +42,10 @@ export const useStore = create(devtools(
       set({ cart: [] }, false, 'emptyCart');
     },
 
-    updateTotal: () => set((state) => ({
+    updateTotal: () => set(() => ({
       sale: {
-        ...state.sale,
-        total: state.products[state.sale.produto - 1]?.valor * state.sale.quantidade,
+        ...get().sale,
+        total: get().products[get().sale.produto - 1]?.valor * get().sale.quantidade,
       }
     }), false, 'updateTotal'),
 
@@ -62,23 +58,9 @@ export const useStore = create(devtools(
       )
     }), false, 'calculateTaxes'),
 
-    setMessage: ({text, type}) => set(() => ({
-      message: {
-        text,
-        type,
-      }
-    }), false, 'setMessage'),
-
-    clearMessage: () => set(() => ({
-      message: {
-        text: '',
-        type: '',
-      }
-    }), false, 'clearMessage'),
-
-    setSale: ({ target: { name, value } }) => set((state) => ({
+    setSale: ({ target: { name, value } }) => set(() => ({
       sale: {
-        ...state.sale,
+        ...get().sale,
         [name]: parseInt(value)
       }
     }), false, `setSale-${name}`),
@@ -90,5 +72,5 @@ export const useStore = create(devtools(
         total: 0,
       }
     }), false, 'clearSale'),
-}),
-));
+
+}), {name: 'Loja do Mirante - saleStore'}));
