@@ -86,9 +86,9 @@ class Request
   //--------------------
   public function POST_pedidos()
   {
-    $query = "INSERT INTO pedidos (total) VALUES(?)";
+    $query = "INSERT INTO pedidos (total, imposto) VALUES(?, ?)";
     $db = new Database();
-    $results = $db->EXE_NON_QUERY($query, [$this->req_body->total]);
+    $results = $db->EXE_NON_QUERY($query, [$this->req_body->total, $this->req_body->imposto]);
     return [
       'status' => 'SUCCESS',
       'message' => '',
