@@ -6,14 +6,19 @@ import request from '../Helpers/request';
 export const productsStore = create(devtools(
   (set, get) => ({
     products: [],
-    product: [],
     edit: [],
+    types: [],
+    product: {
+      nome: '',
+      valor: 0,
+      tipo: null,
+    },
 
     fetchProducts: async () => {
-      const response = await request('produtos', 'GET');
-      const onEdit = response.map((obj) => obj = false);
-      set({ edit: onEdit }, false, 'setInitialEdit');
-      set({ products: await response }, false, 'fetchProducts');
+      const produtos = await request('produtos', 'GET');
+      const tipos = await request('tipos_produto', 'GET')
+      const onEdit = produtos.map((obj) => obj = false);
+      set({ products: await produtos, edit: onEdit, types: tipos  }, false, 'fetchProducts');
     },
 
     setOnEdit: (idx, bool) => {
@@ -25,5 +30,16 @@ export const productsStore = create(devtools(
       state.edit[idx] = bool;
     }, false, 'confirmOnEdit'),
 
+    setProduct: (idx) => set((state) => ({
+      ...state,
+      product: get().products[idx],
+    }), false, 'setProduct'),
+
+    onEditProduct: ({ target: { name, value }}) => set(() => ({
+      product: {
+        ...get().product,
+        [name]: name === 'nome' ? value : parseFloat(value),
+      }
+    }), false, `onEditProduct-${name}`),
 
 }), {name: 'Loja do Mirante - productsStore'}));

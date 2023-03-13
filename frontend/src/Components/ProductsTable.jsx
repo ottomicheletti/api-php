@@ -7,12 +7,21 @@ import { Trash, Pencil, CheckFat } from '@phosphor-icons/react';
 import './Tables.css';
 
 function ProductsTable() {
-  const { products, fetchProducts, edit, setOnEdit, confirmOnEdit } = productsStore(
-    (state) => state
-  );
+  const {
+    products,
+    edit,
+    types,
+    product,
+    fetchProducts,
+    setOnEdit,
+    confirmOnEdit,
+    setProduct,
+    onEditProduct,
+  } = productsStore((state) => state);
   const { setMessage } = messageStore((state) => state);
 
   const editProduct = (index) => {
+    setProduct(index);
     setOnEdit(index, true);
   };
 
@@ -27,6 +36,10 @@ function ProductsTable() {
     setMessage({ text: 'Produto excluído!', type: 'ok' });
   };
 
+  // useEffect(() => {
+  //   fetchProducts();
+  // }, [product]);
+
   useEffect(() => {
     fetchProducts();
   }, []);
@@ -37,12 +50,12 @@ function ProductsTable() {
         <tr className='table-divider'>
           <th>Produto</th>
           <th>Valor (un)</th>
-          <th>Tipo</th>
+          {/* <th>Tipo</th> */}
           <th>Categoria</th>
           <th>% de Imposto</th>
         </tr>
         <tr>
-          <th colSpan={5}>
+          <th colSpan={4}>
             <hr />
           </th>
         </tr>
@@ -51,23 +64,74 @@ function ProductsTable() {
         {products &&
           products.map(
             ({ codigo, nome, valor, tipo, categoria, percentual_imposto }, index) => (
-              <tr key={uuidv4()} className='table-data'>
-                <th>{`${('00' + codigo).slice(-2)} - ${nome}`}</th>
+              <tr key={codigo} className='table-data'>
                 <th>
-                  {valor.toLocaleString('pt-BR', {
-                    style: 'currency',
-                    currency: 'BRL',
-                  })}
+                  {`${('00' + codigo).slice(-2)} - `}
+                  {edit[index] ? (
+                    <input
+                      type='text'
+                      name='nome'
+                      value={product.nome}
+                      onChange={onEditProduct}
+                    />
+                  ) : (
+                    <span>{nome}</span>
+                  )}
                 </th>
-                <th>{tipo}</th>
-                <th>{categoria}</th>
+                <th>
+                  {edit[index] ? (
+                    <input
+                      type='number'
+                      name='valor'
+                      // TODO lógica:
+                      value={parseFloat(product.valor || 0).toLocaleString('pt-BR')}
+                      onChange={onEditProduct}
+                    />
+                  ) : (
+                    <span>
+                      {valor.toLocaleString('pt-BR', {
+                        style: 'currency',
+                        currency: 'BRL',
+                      })}
+                    </span>
+                  )}
+                </th>
+                {/* <th>{tipo}</th> */}
+                <th>
+                  {edit[index] ? (
+                    <select name='tipo' onChange={onEditProduct} value={product.tipo}>
+                      {types.map((type) => (
+                        <option value={type.codigo} key={uuidv4()}>
+                          {type.nome}
+                        </option>
+                      ))}
+                    </select>
+                  ) : (
+                    <span>{categoria}</span>
+                  )}
+                </th>
                 <th>
                   <div className='row-total'>
-                    {(percentual_imposto / 100).toLocaleString('pt-BR', {
-                      style: 'percent',
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}
+                    {edit[index] ? (
+                      <span>
+                        {(
+                          types.find((type) => type.codigo === product.tipo)
+                            ?.percentual_imposto / 100
+                        ).toLocaleString('pt-BR', {
+                          style: 'percent',
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}
+                      </span>
+                    ) : (
+                      <span>
+                        {(percentual_imposto / 100).toLocaleString('pt-BR', {
+                          style: 'percent',
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}
+                      </span>
+                    )}
                     {edit[index] ? (
                       <CheckFat
                         size={20}
@@ -94,7 +158,7 @@ function ProductsTable() {
       </tbody>
       <tfoot>
         <tr>
-          <th colSpan={5}>
+          <th colSpan={4}>
             <hr />
           </th>
         </tr>
