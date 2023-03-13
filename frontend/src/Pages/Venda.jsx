@@ -3,8 +3,7 @@ import React, { useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import request from '../Helpers/request';
 import Layout from '../Components/Layout';
-import Table from './../Components/Table';
-
+import SaleTable from '../Components/SaleTable';
 import { saleStore } from '../Store/Sale';
 import { messageStore } from '../Store/Message';
 import './Venda.css';
@@ -130,7 +129,7 @@ function Venda() {
         </div>
         <hr id='divider' />
         <div className='display-block'>
-          <Table />
+          <SaleTable />
           <button
             className='button-default'
             name='concluir'
