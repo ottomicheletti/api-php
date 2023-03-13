@@ -24,13 +24,14 @@ CREATE TABLE IF NOT EXISTS `pedidos` (
   `codigo` int NOT NULL AUTO_INCREMENT,
   `data` DATETIME NOT NULL DEFAULT now(),
   `total` float DEFAULT NULL,
+  `imposto` float DEFAULT NULL,
   PRIMARY KEY (`codigo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Copiando dados para a tabela desafio.pedido: ~1 rows (aproximadamente)
 DELETE FROM `pedidos`;
-INSERT INTO `pedidos` (`codigo`, `data`, `total`) VALUES
-	(1, '2023-02-23 15:10:20', 155);
+INSERT INTO `pedidos` (`codigo`, `data`, `total`, `imposto`) VALUES
+	(1, '2023-02-23 15:10:20', 203.99, 20.39);
 
 -- Copiando estrutura para tabela desafio.produto
 CREATE TABLE IF NOT EXISTS `produtos` (
@@ -46,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `produtos` (
 -- Copiando dados para a tabela desafio.produto: ~4 rows (aproximadamente)
 DELETE FROM `produtos`;
 INSERT INTO `produtos` (`codigo`, `nome`, `valor`, `tipo`) VALUES
-	(1, 'Pão', 10, 1),
+	(1, 'Pão', 1, 1),
 	(2, 'Picanha', 90, 1),
 	(3, 'Maionese', 3.99, 1),
 	(4, 'Celular xing-ling', 2000, 2);
@@ -68,9 +69,9 @@ CREATE TABLE IF NOT EXISTS `produtos_pedido` (
 -- Copiando dados para a tabela desafio.produto_pedido: ~3 rows (aproximadamente)
 DELETE FROM `produtos_pedido`;
 INSERT INTO `produtos_pedido` (`codigo`, `pedido`, `produto`, `quantidade`, `total`) VALUES
-	(1, 1, 2, 2, 50),
-	(2, 1, 3, 1, 5),
-	(3, 1, 1, 20, 100);
+	(1, 1, 2, 2, 180),
+	(2, 1, 3, 1, 3.99),
+	(3, 1, 1, 20, 20);
 
 -- Copiando estrutura para tabela desafio.tipo_produto
 CREATE TABLE IF NOT EXISTS `tipos_produto` (
