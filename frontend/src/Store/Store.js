@@ -16,6 +16,7 @@ export const useStore = create(devtools(
       text: '',
       type: '',
     },
+    taxes: 0,
 
     fetchProducts: async () => {
       const response = await request('produtos', 'GET');
@@ -52,6 +53,15 @@ export const useStore = create(devtools(
       }
     }), false, 'updateTotal'),
 
+    calculateTaxes: () => set(() => ({
+      taxes: get().cart.reduce(
+        (acc, curr) =>
+          acc +
+          curr.total * (get().products[curr.produto - 1].percentual_imposto / 100),
+        0
+      )
+    }), false, 'calculateTaxes'),
+
     setMessage: ({text, type}) => set(() => ({
       message: {
         text,
@@ -80,7 +90,5 @@ export const useStore = create(devtools(
         total: 0,
       }
     }), false, 'clearSale'),
-
-
 }),
 ));
