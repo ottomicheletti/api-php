@@ -32,14 +32,14 @@ function Venda() {
           const idx = [...cart].findIndex((c) => c.produto === sale.produto);
           if (idx === -1) {
             insertOnCart();
-            setMessage({ text: 'Produto incluído com sucesso!', type: 'success' });
+            setMessage({ text: 'Produto incluído com sucesso!', type: 'ok' });
           } else {
             updateCartItem(sale.produto, sale.quantidade, sale.total);
-            setMessage({ text: 'O produto foi atualizado!', type: 'success' });
+            setMessage({ text: 'O produto foi atualizado!', type: 'ok' });
           }
           clearSale();
         } else {
-          setMessage({ text: 'Verifique seus inputs.', type: 'error' });
+          setMessage({ text: 'Verifique seus inputs.', type: 'fail' });
         }
         break;
       case 'concluir':
@@ -52,13 +52,13 @@ function Venda() {
             await request('produtos_pedido', 'POST', { pedido, ...item });
           });
           emptyCart();
-          setMessage({ text: 'Venda concluída!', type: 'success' });
+          setMessage({ text: 'Venda concluída!', type: 'ok' });
         } else {
-          setMessage({ text: 'Não há produtos em venda.', type: 'error' });
+          setMessage({ text: 'Não há produtos em venda.', type: 'fail' });
         }
         break;
       default:
-        setMessage({ text: 'Verifique seus inputs.', type: 'error' });
+        setMessage({ text: 'Verifique seus inputs.', type: 'fail' });
         break;
     }
   };

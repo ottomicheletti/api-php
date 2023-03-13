@@ -14,7 +14,7 @@ function SaleTable() {
 
   const removeItem = (produto) => {
     removeFromCart(produto);
-    setMessage({ text: 'Produto excluído da venda.', type: 'success' });
+    setMessage({ text: 'Produto excluído da venda.', type: 'ok' });
   };
 
   useEffect(() => {

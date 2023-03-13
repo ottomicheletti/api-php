@@ -18,11 +18,13 @@ function ProductsTable() {
 
   const acceptEdit = (index) => {
     confirmOnEdit(index, false);
+    // logica
+    setMessage({ text: 'Produto editado!', type: 'ok' });
   };
 
   const removeProduct = (code) => {
     // removeFromCart(produto);
-    setMessage({ text: 'Produto excluído do Banco de Dados.', type: 'success' });
+    setMessage({ text: 'Produto excluído!', type: 'ok' });
   };
 
   useEffect(() => {
