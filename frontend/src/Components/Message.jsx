@@ -1,11 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
-import { useStore } from '../Store/Store';
+import { messageStore } from '../Store/Message';
 import { XSquare, CheckSquare } from '@phosphor-icons/react';
 import './Message.css';
 
 function Message() {
-  const { message, clearMessage } = useStore((state) => state);
+  const { message, clearMessage } = messageStore((state) => state);
   const [visivel, setVisivel] = useState(false);
 
   useEffect(() => {

@@ -1,13 +1,21 @@
 import React, { useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { useStore } from '../Store/Store';
+import { saleStore } from '../Store/Sale';
+import { messageStore } from '../Store/Message';
 import { Trash } from '@phosphor-icons/react';
 import './Table.css';
 
 function Table() {
-  const { cart, products, removeFromCart, calculateTaxes, taxes } = useStore(
+  const { cart, products, removeFromCart, calculateTaxes, taxes } = saleStore(
     (state) => state
   );
+
+  const { setMessage } = messageStore((state) => state);
+
+  const removeItem = (produto) => {
+    removeFromCart(produto);
+    setMessage({ text: 'Produto excluído da venda.', type: 'success' });
+  };
 
   useEffect(() => {
     calculateTaxes();
@@ -45,11 +53,7 @@ function Table() {
                   style: 'currency',
                   currency: 'BRL',
                 })}
-                <Trash
-                  size={20}
-                  className='trash'
-                  onClick={() => removeFromCart(produto)}
-                />
+                <Trash size={20} className='trash' onClick={() => removeItem(produto)} />
               </div>
             </th>
           </tr>

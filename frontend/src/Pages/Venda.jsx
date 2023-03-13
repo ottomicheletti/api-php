@@ -5,7 +5,8 @@ import request from '../Helpers/request';
 import Layout from '../Components/Layout';
 import Table from './../Components/Table';
 
-import { useStore } from '../Store/Store';
+import { saleStore } from '../Store/Sale';
+import { messageStore } from '../Store/Message';
 import './Venda.css';
 
 function Venda() {
@@ -19,10 +20,11 @@ function Venda() {
     updateCartItem,
     emptyCart,
     updateTotal,
-    setMessage,
     setSale,
     clearSale,
-  } = useStore((state) => state);
+  } = saleStore((state) => state);
+
+  const { setMessage } = messageStore((state) => state);
 
   const handleClick = async (name) => {
     switch (name) {
