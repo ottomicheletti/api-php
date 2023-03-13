@@ -1,0 +1,65 @@
+table {
+  text-align: left;
+  width: 100%;
+  overflow: scroll;
+}
+
+table::-webkit-scrollbar {
+  display: none;
+}
+
+table hr {
+  border: none;
+  height: 1px;
+  background-color: #c4c4c4;
+  margin: 0.5em 0;
+}
+
+.row-total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 1em;
+}
+
+.trash {
+  color: #c4c4c4;
+  transition: all 0.05s ease-in-out;
+}
+
+.trash:hover {
+  color: #721c24;
+  cursor: pointer;
+}
+
+.trash:active {
+  transform: scale(0.9);
+}
+
+.pencil {
+  color: #c4c4c4;
+  transition: all 0.05s ease-in-out;
+}
+
+.pencil:hover {
+  color: #000;
+  cursor: pointer;
+}
+
+.pencil:active {
+  transform: scale(0.9);
+}
+
+.check {
+  color: #c4c4c4;
+  transition: all 0.05s ease-in-out;
+}
+
+.check:hover {
+  color: #155724;
+  cursor: pointer;
+}
+
+.check:active {
+  transform: scale(0.9);
+}
