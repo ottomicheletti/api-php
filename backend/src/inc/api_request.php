@@ -35,8 +35,10 @@ class Request
   {
     $db = new Database();
     if (!isset($this->req_param)) {
+      //TODO INNER JOIN
       $results = $db->EXE_QUERY("SELECT * FROM " . $this->endpoint);
     } else {
+      //TODO INNER JOIN
       $query = "SELECT * FROM pedidos WHERE codigo=?";
       $results = $db->EXE_QUERY($query, [intval($this->req_param)]);
     }
