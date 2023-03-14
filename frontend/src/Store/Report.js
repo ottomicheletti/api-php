@@ -10,7 +10,6 @@ export const reportStore = create(devtools(
       qual: 0,
     },
     orders: [],
-    data: [],
 
     setReport: ({ target: { name, value }}) => {
       if(name === 'tipo') {
@@ -35,13 +34,6 @@ export const reportStore = create(devtools(
       set(() => ({
         orders: response.map((p) => ({ codigo: p.codigo })),
       }), false, 'setOrders')
-    },
-
-    fetchData: async (url) => {
-      const response = await request(`${url}`, 'GET');
-      set(() => ({
-        data: response,
-      }), false, 'fetchData')
     },
 
 }), {name: 'Loja do Mirante - reportStore'}));
