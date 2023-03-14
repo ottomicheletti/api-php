@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { messageStore } from '../Store/Message';
 import { productsStore } from '../Store/Products';
 import { Trash, Pencil, CheckFat } from '@phosphor-icons/react';
+import request from '../Helpers/request';
 import './Tables.css';
 
 function ProductsTable() {
@@ -25,20 +26,22 @@ function ProductsTable() {
     setOnEdit(index, true);
   };
 
-  const acceptEdit = (index) => {
+  const acceptEdit = async (index) => {
     confirmOnEdit(index, false);
-    // logica
+    await request(`produtos/${product.codigo}`, 'PUT', {
+      nome: product.nome,
+      valor: product.valor,
+      tipo: product.tipo,
+    });
+    fetchProducts();
     setMessage({ text: 'Produto editado!', type: 'ok' });
   };
 
-  const removeProduct = (code) => {
-    // removeFromCart(produto);
+  const removeProduct = async (code) => {
+    await request(`produtos/${code}`, 'DELETE');
+    fetchProducts();
     setMessage({ text: 'Produto excluído!', type: 'ok' });
   };
-
-  // useEffect(() => {
-  //   fetchProducts();
-  // }, [product]);
 
   useEffect(() => {
     fetchProducts();
@@ -83,8 +86,7 @@ function ProductsTable() {
                     <input
                       type='number'
                       name='valor'
-                      // TODO lógica:
-                      value={parseFloat(product.valor || 0).toLocaleString('pt-BR')}
+                      value={parseFloat(product.valor)}
                       onChange={onEditProduct}
                     />
                   ) : (
@@ -148,7 +150,7 @@ function ProductsTable() {
                     <Trash
                       size={20}
                       className='trash'
-                      onClick={() => removeProduct(index)}
+                      onClick={() => removeProduct(codigo)}
                     />
                   </div>
                 </th>
