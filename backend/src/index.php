@@ -28,7 +28,11 @@ if (!$api->check_method($req_method)) {
 switch ($req_method) {
   case 'GET':
     //echo "entrou no GET"
-    $api_req = new Request($api->get_endpoint());
+    if (isset($path[1])) {
+      $api_req = new Request($api->get_endpoint(), $path[1]);
+    } else {
+      $api_req = new Request($api->get_endpoint());
+    }
     break;
   case 'POST':
     //echo "entrou no POST"
