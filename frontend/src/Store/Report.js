@@ -9,12 +9,39 @@ export const reportStore = create(devtools(
       tipo: 'produtos',
       qual: 0,
     },
+    orders: [],
+    data: [],
 
-    setReport: ({ target: { name, value }}) => set(() => ({
-      report: {
-        ...get().report,
-        [name]: value,
+    setReport: ({ target: { name, value }}) => {
+      if(name === 'tipo') {
+        set(() => ({
+        report: {
+          ...get().report,
+          [name]: value,
+        },
+      }), false, `setReport-${name}`);
+      } else {
+        set(() => ({
+          report: {
+            ...get().report,
+            [name]: parseInt(value),
+          },
+        }), false, `setReport-${name}`);
       }
-    }), false, 'setReport'),
+    },
+
+    setOrders: async () => {
+      const response = await request('pedidos', 'GET');
+      set(() => ({
+        orders: response.map((p) => ({ codigo: p.codigo })),
+      }), false, 'setOrders')
+    },
+
+    fetchData: async (url) => {
+      const response = await request(`${url}`, 'GET');
+      set(() => ({
+        data: response,
+      }), false, 'fetchData')
+    },
 
 }), {name: 'Loja do Mirante - reportStore'}));
