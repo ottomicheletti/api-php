@@ -34,7 +34,13 @@ class Request
   public function GET_pedidos()
   {
     $db = new Database();
-    $results = $db->EXE_QUERY("SELECT * FROM " . $this->endpoint);
+    if (!isset($this->req_param)) {
+      $results = $db->EXE_QUERY("SELECT * FROM " . $this->endpoint);
+    } else {
+      $query = "SELECT * FROM pedidos WHERE codigo=?";
+      $results = $db->EXE_QUERY($query, [intval($this->req_param)]);
+    }
+
     return [
       'status' => 'SUCCESS',
       'message' => '',
