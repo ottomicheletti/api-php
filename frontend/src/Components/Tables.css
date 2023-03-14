@@ -116,3 +116,7 @@ tr {
 .close {
   color: #721c24;
 }
+
+#percent {
+  width: 3.5em;
+}
