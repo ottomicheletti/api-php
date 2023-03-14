@@ -1,39 +1,51 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 import Layout from '../Components/Layout';
 import { reportStore } from './../Store/Report';
+import request from '../Helpers/request';
 import './Relatorio.css';
 
 function Relatorio() {
   //TODO  INNER JOIN chaves: pedido.codigo = produtos_pedido.pedido
+  //TODO  Melhorar formatação do PDF.
 
-  const { report, orders, data, setReport, setOrders, fetchData } = reportStore(
-    (state) => state
-  );
+  const { report, orders, setReport, setOrders } = reportStore((state) => state);
 
-  const generateReport = async () => {
+  const generateReport = (data, filename) => {
+    const doc = new jsPDF();
+    const head = Object.keys(data[0]).map((title) =>
+      (title.charAt(0).toUpperCase() + title.slice(1)).replace(/[^A-Z0-9]+/gi, ' ')
+    );
+    const body = data.map((d) => Object.values(d));
+
+    autoTable(doc, {
+      head: [head],
+      body,
+    });
+
+    doc.save(`relatorio${filename}.pdf`);
+  };
+
+  const handleGenerate = () => {
     switch (report.tipo) {
       case 'tipos':
-        console.log('Gerando relatório de tipos de produtos');
-
-        await fetchData('tipos_produto');
-
+        request('tipos_produto', 'GET').then((data) =>
+          generateReport(data, '_tipos_produto')
+        );
         break;
       case 'pedidos':
-        console.log('Gerando relatório de pedido(s)');
-
         if (report.qual !== 0) {
-          await fetchData(`pedidos/${report.qual}`);
+          request(`pedidos/${report.qual}`, 'GET').then((data) =>
+            generateReport(data, `_pedidos_${report.qual}`)
+          );
         } else {
-          await fetchData('pedidos');
+          request('pedidos', 'GET').then((data) => generateReport(data, '_pedidos'));
         }
-
         break;
       default:
-        console.log('Gerando relatório de produtos');
-
-        await fetchData('produtos');
-
+        request('produtos', 'GET').then((data) => generateReport(data, '_produtos'));
         break;
     }
   };
@@ -71,7 +83,7 @@ function Relatorio() {
           <button
             className='button-default'
             name='incluir'
-            onClick={() => generateReport()}
+            onClick={() => handleGenerate()}
           >
             Gerar Relatório
           </button>
