@@ -1,10 +1,11 @@
 import React from 'react';
 import Layout from '../Components/Layout';
+import TypesTable from './../Components/TypesTable';
 
 function Tipos() {
   return (
     <Layout>
-      <div>Estou na página tipos de produto</div>
+      <TypesTable />
     </Layout>
   );
 }
