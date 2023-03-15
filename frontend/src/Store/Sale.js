@@ -45,7 +45,7 @@ export const saleStore = create(devtools(
     updateTotal: () => set(() => ({
       sale: {
         ...get().sale,
-        total: get().products[get().sale.produto - 1]?.valor * get().sale.quantidade,
+        total: get().products[get().products.findIndex((product) => product.codigo === get().sale.produto)]?.valor * get().sale.quantidade,
       }
     }), false, 'updateTotal'),
 
@@ -53,7 +53,7 @@ export const saleStore = create(devtools(
       taxes: get().cart.reduce(
         (acc, curr) =>
           acc +
-          curr.total * (get().products[curr.produto - 1].percentual_imposto / 100),
+          curr.total * (get().products[get().products.findIndex((product) => product.codigo === curr.produto)].percentual_imposto / 100),
         0
       )
     }), false, 'calculateTaxes'),

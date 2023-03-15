@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import request from '../Helpers/request';
-// import produce from 'immer';
 
 export const reportStore = create(devtools(
   (set, get) => ({
@@ -32,7 +31,7 @@ export const reportStore = create(devtools(
     setOrders: async () => {
       const response = await request('pedidos', 'GET');
       set(() => ({
-        orders: response.map((p) => ({ codigo: p.codigo })),
+        orders:  response.map((res) => res.pedido).filter((res, index, self) => self.indexOf(res) === index),
       }), false, 'setOrders')
     },
 
