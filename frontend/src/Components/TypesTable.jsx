@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import { messageStore } from '../Store/Message';
 import {
   Trash,
@@ -31,13 +30,17 @@ function TypesTable() {
   };
 
   const acceptEdit = async (index) => {
-    confirmOnEdit(index, false);
-    await request(`tipos_produto/${type.codigo}`, 'PUT', {
-      nome: type.nome,
-      percentual_imposto: type.percentual_imposto,
-    });
-    fetchTypes();
-    setMessage({ text: 'Tipo editado!', type: 'ok' });
+    if (!['', "'"].includes(type.nome) && type.percentual_imposto > 0) {
+      confirmOnEdit(index, false);
+      await request(`tipos_produto/${type.codigo}`, 'PUT', {
+        nome: type.nome,
+        percentual_imposto: type.percentual_imposto,
+      });
+      fetchTypes();
+      setMessage({ text: 'Tipo editado!', type: 'ok' });
+    } else {
+      setMessage({ text: 'Verifique seus inputs.', type: 'fail' });
+    }
   };
 
   const removeType = async (code) => {
@@ -51,7 +54,7 @@ function TypesTable() {
   };
 
   const insertNewType = async () => {
-    if (newType.nome !== '' && newType.percentual > 0) {
+    if (!['', "'"].includes(newType.nome) && newType.percentual > 0) {
       await request('tipos_produto', 'POST', {
         nome: newType.nome,
         percentual_imposto: newType.percentual,
@@ -90,7 +93,7 @@ function TypesTable() {
         <tbody>
           {types &&
             types.map(({ codigo, nome, percentual_imposto }, index) => (
-              <tr key={uuidv4()} className='table-data'>
+              <tr key={codigo} className='table-data'>
                 <th>{('00' + codigo).slice(-2)}</th>
                 <th>
                   {edit[index] ? (

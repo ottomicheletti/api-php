@@ -41,14 +41,18 @@ function ProductsTable() {
   };
 
   const acceptEdit = async (index) => {
-    confirmOnEdit(index, false);
-    await request(`produtos/${product.codigo}`, 'PUT', {
-      nome: product.nome,
-      valor: product.valor,
-      tipo: product.tipo,
-    });
-    fetchProducts();
-    setMessage({ text: 'Produto editado!', type: 'ok' });
+    if (!['', "'"].includes(product.nome) && product.valor > 0) {
+      confirmOnEdit(index, false);
+      await request(`produtos/${product.codigo}`, 'PUT', {
+        nome: product.nome,
+        valor: product.valor,
+        tipo: product.tipo,
+      });
+      fetchProducts();
+      setMessage({ text: 'Produto editado!', type: 'ok' });
+    } else {
+      setMessage({ text: 'Verifique seus inputs.', type: 'fail' });
+    }
   };
 
   const removeProduct = async (code) => {
@@ -62,7 +66,7 @@ function ProductsTable() {
   };
 
   const insertNewProduct = async () => {
-    if (newProduct.nome !== '' && newProduct.valor > 0) {
+    if (!['', "'"].includes(newProduct.nome) && newProduct.valor > 0) {
       await request('produtos', 'POST', {
         nome: newProduct.nome,
         valor: newProduct.valor,
