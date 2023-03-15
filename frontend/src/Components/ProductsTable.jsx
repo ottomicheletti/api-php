@@ -52,9 +52,13 @@ function ProductsTable() {
   };
 
   const removeProduct = async (code) => {
-    await request(`produtos/${code}`, 'DELETE');
-    fetchProducts();
-    setMessage({ text: 'Produto excluído!', type: 'ok' });
+    try {
+      await request(`produtos/${code}`, 'DELETE');
+      fetchProducts();
+      setMessage({ text: 'Produto excluído!', type: 'ok' });
+    } catch {
+      setMessage({ text: 'Existem pedidos com esse produto.', type: 'fail' });
+    }
   };
 
   const insertNewProduct = async () => {
@@ -100,7 +104,7 @@ function ProductsTable() {
         <tbody>
           {products &&
             products.map(
-              ({ codigo, nome, valor, tipo, categoria, percentual_imposto }, index) => (
+              ({ codigo, nome, valor, categoria, percentual_imposto }, index) => (
                 <tr key={codigo} className='table-data'>
                   <th>
                     {`${('00' + codigo).slice(-2)} - `}
@@ -120,7 +124,7 @@ function ProductsTable() {
                       <input
                         type='number'
                         name='valor'
-                        value={parseFloat(product.valor)}
+                        value={parseFloat(product.valor) || 0}
                         onChange={onEditProduct}
                       />
                     ) : (
