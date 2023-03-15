@@ -35,11 +35,9 @@ class Request
   {
     $db = new Database();
     if (!isset($this->req_param)) {
-      //TODO INNER JOIN
-      $results = $db->EXE_QUERY("SELECT * FROM " . $this->endpoint);
+      $results = $db->EXE_QUERY("SELECT pedidos.codigo AS pedido, pedidos.data, produtos.nome, produtos.codigo AS codigo, produtos.valor , produtos_pedido.quantidade ,produtos_pedido.total, produtos_pedido.total * (tipos_produto.percentual_imposto / 100) AS imposto, produtos_pedido.total FROM pedidos INNER JOIN produtos_pedido ON pedidos.codigo =  produtos_pedido.pedido INNER JOIN produtos ON  produtos_pedido.produto = produtos.codigo INNER JOIN tipos_produto ON produtos.tipo = tipos_produto.codigo");
     } else {
-      //TODO INNER JOIN
-      $query = "SELECT * FROM pedidos WHERE codigo=?";
+      $query = "SELECT pedidos.codigo AS pedido, pedidos.data, produtos.nome, produtos.codigo AS codigo, produtos.valor , produtos_pedido.quantidade ,produtos_pedido.total, produtos_pedido.total * (tipos_produto.percentual_imposto / 100) AS imposto, produtos_pedido.total FROM pedidos INNER JOIN produtos_pedido ON pedidos.codigo =  produtos_pedido.pedido INNER JOIN produtos ON  produtos_pedido.produto = produtos.codigo INNER JOIN tipos_produto ON produtos.tipo = tipos_produto.codigo WHERE pedidos.codigo=?";
       $results = $db->EXE_QUERY($query, [intval($this->req_param)]);
     }
 
