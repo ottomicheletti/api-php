@@ -39,11 +39,10 @@ class Request
       pedidos.codigo AS pedido,
       produtos.nome,
       produtos.codigo AS codigo,
-      produtos.valor,
+      produtos_pedido.total / produtos_pedido.quantidade AS valor,
       produtos_pedido.quantidade,
-      produtos_pedido.total,
+      produtos_pedido.total AS total,
       produtos_pedido.total * (tipos_produto.percentual_imposto / 100) AS imposto,
-      produtos_pedido.total,
       pedidos.data FROM pedidos INNER JOIN produtos_pedido ON pedidos.codigo =  produtos_pedido.pedido
       INNER JOIN produtos ON  produtos_pedido.produto = produtos.codigo
       INNER JOIN tipos_produto ON produtos.tipo = tipos_produto.codigo");
@@ -52,9 +51,9 @@ class Request
       pedidos.codigo AS pedido,
       produtos.nome,
       produtos.codigo AS codigo,
-      produtos.valor ,
+      produtos_pedido.total / produtos_pedido.quantidade AS valor,
       produtos_pedido.quantidade,
-      produtos_pedido.total,
+      produtos_pedido.total AS total,
       produtos_pedido.total * (tipos_produto.percentual_imposto / 100) AS imposto,
       produtos_pedido.total, pedidos.data FROM pedidos INNER JOIN produtos_pedido ON pedidos.codigo =  produtos_pedido.pedido
       INNER JOIN produtos ON  produtos_pedido.produto = produtos.codigo
