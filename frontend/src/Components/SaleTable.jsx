@@ -39,10 +39,14 @@ function SaleTable() {
       <tbody>
         {cart.map(({ produto, quantidade, total }) => (
           <tr key={uuidv4()} className='table-data'>
-            <th>{`${('00' + produto).slice(-2)} - ${products[produto - 1].nome}`}</th>
+            <th>{`${('00' + produto).slice(-2)} - ${
+              products[products.findIndex((product) => product.codigo === produto)].nome
+            }`}</th>
             <th>{quantidade}</th>
             <th>
-              {products[produto - 1].valor.toLocaleString('pt-BR', {
+              {products[
+                products.findIndex((product) => product.codigo === produto)
+              ].valor.toLocaleString('pt-BR', {
                 style: 'currency',
                 currency: 'BRL',
               })}
