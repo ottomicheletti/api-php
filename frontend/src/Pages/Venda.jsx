@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import request from '../Helpers/request';
 import Layout from '../Components/Layout';
 import SaleTable from '../Components/SaleTable';
@@ -79,7 +78,7 @@ function Venda() {
             <div>Produto</div>
             <select name='produto' onChange={setSale} value={sale.produto}>
               {products.map((product) => (
-                <option value={product.codigo} key={uuidv4()}>
+                <option value={product.codigo} key={product.codigo}>
                   {`${('00' + product.codigo).slice(-2)} - ${product.nome}`}
                 </option>
               ))}
@@ -100,7 +99,8 @@ function Venda() {
               <div>Valor (un)</div>
               <div>
                 {sale.produto
-                  ? products[sale.produto - 1]?.valor.toLocaleString('pt-BR', {
+                  ? //TODO REFATORAR A LÓGICA DA ARRAY -> tentar com .filter ou .find
+                    products[sale.produto - 1]?.valor.toLocaleString('pt-BR', {
                       style: 'currency',
                       currency: 'BRL',
                     })
