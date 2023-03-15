@@ -8,7 +8,6 @@ import request from '../Helpers/request';
 import './Relatorio.css';
 
 function Relatorio() {
-  //TODO  INNER JOIN chaves: pedido.codigo = produtos_pedido.pedido
   //TODO  Melhorar formatação do PDF.
 
   const { report, orders, setReport, setOrders } = reportStore((state) => state);
