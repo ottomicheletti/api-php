@@ -99,8 +99,9 @@ function Venda() {
               <div>Valor (un)</div>
               <div>
                 {sale.produto
-                  ? //TODO REFATORAR A LÓGICA DA ARRAY -> tentar com .filter ou .find
-                    products[sale.produto - 1]?.valor.toLocaleString('pt-BR', {
+                  ? products[
+                      products.findIndex((product) => product.codigo === sale.produto)
+                    ]?.valor.toLocaleString('pt-BR', {
                       style: 'currency',
                       currency: 'BRL',
                     })
